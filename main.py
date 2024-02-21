@@ -6,77 +6,39 @@ from nextcord.ext import commands
 
 
 os.chdir("H:/Python/FurBot")
-
-description = """An example bot to showcase the nextcord.ext.commands extension
-module.
-
-There are a number of utility commands being showcased here."""
-
-intents = nextcord.Intents.default()
-intents.members = True
-intents.message_content = True
-
-bot = commands.Bot(command_prefix="$", description=description, intents=intents)
+BOT_TOKEN = open("token.txt").read()
 
 
-@bot.event
-async def on_ready():
-    print(f"Logged in as {bot.user} (ID: {bot.user.id})")
+# Create a Nexcord client
+client = nextcord.Client()
 
-
-@bot.command()
-async def add(ctx, left: int, right: int):
-    """Adds two numbers together."""
-    await ctx.send(left + right)
-
-
-@bot.command()
-async def roll(ctx, dice: str):
-    """Rolls a dice in NdN format."""
-    try:
-        rolls, limit = map(int, dice.split("d"))
-    except ValueError:
-        await ctx.send("Format has to be in NdN!")
+# Define basic commands
+@client.event
+async def on_message(message):
+    if message.author == client.user:  # Prevent bot from responding to itself
         return
 
-    result = ", ".join(str(random.randint(1, limit)) for _ in range(rolls))
-    await ctx.send(result)
+    if message.content.startswith("!hello"):
+        await message.channel.send("Hello there!")
 
+    elif message.content.startswith("!ping"):
+        await message.channel.send("Pong!")
 
-@bot.command(description="For when you wanna settle the score some other way")
-async def choose(ctx, *choices: str):
-    """Chooses between multiple choices."""
-    await ctx.send(random.choice(choices))
+    elif message.content.startswith("!help"):
+        help_message = """
+        **Available commands:**
 
+        - !hello: Greet the bot.
+        - !ping: Check the bot's response time.
+        - !help: Display this help message.
 
-@bot.command()
-async def repeat(ctx, times: int, content="repeating..."):
-    """Repeats a message multiple times."""
-    for _ in range(times):
-        await ctx.send(content)
+        **Additional features:**
 
-
-@bot.command()
-async def joined(ctx, member: nextcord.Member):
-    """Says when a member joined."""
-    await ctx.send(f"{member.name} joined in {member.joined_at}")
-
-
-@bot.group()
-async def cool(ctx):
-    """Says if a user is cool.
-
-    In reality this just checks if a subcommand is being invoked.
-    """
-    if ctx.invoked_subcommand is None:
-        await ctx.send(f"No, {ctx.subcommand_passed} is not cool")
-
-
-@cool.command(name="bot")
-async def _bot(ctx):
-    """Is the bot cool?"""
-    await ctx.send("Yes, the bot is cool.")
-
+        - This bot can be expanded to include more commands and functionalities.
+        - Consider using error handling and input validation for robustness.
+        - Explore Nexcord's documentation for more customization options.
+        """
+        await message.channel.send(help_message)
 
 # Run the bot
 client.run(BOT_TOKEN)
