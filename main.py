@@ -9,14 +9,14 @@ os.chdir("H:/Python/FurBot")
 # Replace with your Nexcord bot token
 BOT_TOKEN = open("token.txt", "r").read()
 
-# Create a Nexcord client
-client = nextcord.Client()
+intents = nextcord.Intents.default()
+intents.message_content = True
+bot = commands.Bot(command_prefix="$", intents=intents)
 
-bot = commands.Bot(command_prefix='$')
 
-@bot.event
-async def on_message(message):
-    print(f'Message from {message.author}: {message.content}')
+@bot.command()
+async def hello(ctx):
+    await ctx.reply("Hello!")
 
 
 # Run the bot
