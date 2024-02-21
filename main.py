@@ -1,6 +1,8 @@
 #   FurBot
 import nextcord
 import os
+from nextcord.ext import commands
+
 
 os.chdir("H:/Python/FurBot")
 
