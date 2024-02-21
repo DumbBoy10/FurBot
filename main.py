@@ -8,7 +8,7 @@ os.chdir("H:/Python/FurBot")
 
 # Replace with your Nexcord bot token
 BOT_TOKEN = open("token.txt", "r").read()
-bot = commands.Bot(command_prefix="$", intents=intents)
+bot = commands.Bot(command_prefix="$")
 
 
 @bot.command()
